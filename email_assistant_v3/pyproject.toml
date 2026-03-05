@@ -1,0 +1,26 @@
+[project]
+name = "email-assistant-v2"
+version = "0.2.0"
+description = "Email assistant s AI agentem - Workflow Agent + MCP tools + LLM extrakce"
+requires-python = ">=3.12"
+dependencies = [
+    # LLM & Agent framework
+    "openai>=1.84.0",
+    "instructor>=1.7.0",
+    "pydantic>=2.0.0",
+    # MCP (server i klient)
+    "mcp>=1.3.0",
+    "starlette>=0.27.0",
+    "uvicorn>=0.23.0",
+    "httpx>=0.25.0",
+    # SharePoint / Microsoft Graph
+    "msal>=1.20.0",
+    "requests>=2.32.3",
+    # Excel
+    "pandas>=2.0.0",
+    "openpyxl>=3.1.0",
+    # PDF
+    "pypdf>=4.0.0",
+    # Utilities
+    "python-dotenv>=1.1.0",
+]

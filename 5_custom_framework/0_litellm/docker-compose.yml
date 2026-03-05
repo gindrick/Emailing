@@ -1,0 +1,34 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      - POSTGRES_USER=myuser1
+      - POSTGRES_PASSWORD=mysecretpassword1
+      - POSTGRES_DB=litellmdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - llm_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser1 -d litellmdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  litellm:
+    image: ghcr.io/berriai/litellm:main-stable
+    ports:
+      - "4000:4000" 
+    environment:
+      - LITELLM_MASTER_KEY=sk-mysecretkey
+      - DATABASE_URL=postgresql://myuser1:mysecretpassword1@postgres:5432/litellmdb
+    volumes:
+      - ./litellm_config.yaml:/app/config.yaml 
+    command: [ "--config", "/app/config.yaml", "--port", "4000", "--num_workers", "8" ]
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  llm_postgres_data:
